@@ -1,4 +1,5 @@
 #important libraries
+from urllib import response
 from flask import Flask
 import json
 from flask import Flask,redirect, jsonify
@@ -21,9 +22,8 @@ from datetime import datetime, timedelta, timezone
 #App configurations
 app = Flask(__name__)
 
-CORS(app)
+cors = CORS(app)
 load_dotenv()
-CORS(app)
 app.config['Access-Control-Allow-Origin'] = '*'
 app.config["Access-Control-Allow-Headers"]="Content-Type"
 app.config['DEBUG'] = os.getenv('DEBUG')
@@ -62,7 +62,8 @@ def home():
 def getToken(): 
     auth = base64.b64encode(AUTH.encode('ascii')).decode("utf-8") 
     id = base64.b64encode(ID.encode('ascii')).decode("utf-8") 
-    return redirect('http://decentralizemusic.com/v1/oauth/login?auth='+str(auth)+'&client_id='+str(id), code=307)
+    response = jsonify({'redirect_url': 'http://decentralizemusic.com/v1/oauth/login?auth='+str(auth)+'&client_id='+str(id)})
+    return response
 
 
 # ---------------------------------------------------------------------------------------
@@ -72,6 +73,7 @@ def getToken():
 @app.after_request
 def refresh_expiring_jwts(response):
     try:
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
         target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
@@ -83,6 +85,9 @@ def refresh_expiring_jwts(response):
                 response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         # Case where there is not a valid JWT. Just return the original respone
         return response
 
