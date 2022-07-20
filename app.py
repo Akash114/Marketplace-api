@@ -6,7 +6,7 @@ from flask import Flask,redirect, jsonify
 from flask.wrappers import Response
 from flask.globals import request, session
 import requests
-from user_module import connect_db, insert_into_db, get_user,get_all_users
+from user_module import *
 import jwt
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -57,7 +57,6 @@ def home():
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 #Login API
-
 @app.route('/api/login', methods=["GET"])
 def getToken(): 
     auth = base64.b64encode(AUTH.encode('ascii')).decode("utf-8") 
@@ -178,6 +177,66 @@ def get_users():
         "data":all_users
     }
     return response_body
+
+
+@app.route('/api/addFollower',methods=["POST"])
+@jwt_required()
+def add_follower():
+    try:
+        user = get_user(get_jwt_identity())
+        following_username = request.args.get('following_username')
+        request_add_follower(user.username,following_username)
+        response_body = {
+        "status":200,
+        "data":'Follower Added Sucessfully'
+        }
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getFollower',methods=["GET"])
+def get_follower():
+    try:
+        username = request.args.get('username')
+        followers = request_get_follower(username)
+        response_body = {
+        "status":200,
+        "data":followers
+        }
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAccess',methods=["GET"])
+def get_access():
+    try:
+        username = request.args.get('username')
+        access = request_get_access(username)
+        response_body = {
+        "status":200,
+        "data":access
+        }
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/setAccess',methods=["GET"])
+def set_access():
+    try:
+        username = request.args.get('username')
+        access_type = request.args.get('access_type')
+        access = request_set_access(username,access_type)
+        response_body = {
+        "status":200,
+        "data":access
+        }
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")

@@ -26,7 +26,7 @@ def connect_db():
 def insert_into_db(username,name, email, picture,id):
     try:
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(srks_id=id)
             print({"_id": str(user["id"]), "message": "User already exists"})
         except:
             new_user = User(
@@ -35,7 +35,10 @@ def insert_into_db(username,name, email, picture,id):
                 name=name,
                 email=email,
                 picture=picture,
-                srks_id=id
+                srks_id=id,
+                following_username=[],
+                follower_username=[],
+                access= 'Grant'
             )
             new_user.save()
             print({"_id": str(new_user["id"]), "message": "User created"})
@@ -61,3 +64,63 @@ def get_user(srks_id):
 #Get All users Data 
 def get_all_users():
     return User.objects.all()
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#add follower 
+def request_add_follower(follower_username,following_username):
+    try:
+        follower_user = User.objects.get(username=follower_username)
+        following_user = User.objects.get(username=following_username)
+        follower_user.following_username.append(following_username)
+        following_user.follower_username.append(follower_username)
+        follower_user.save()
+        following_user.save()
+        return "Follower Added Sucessfully !"
+    except Exception as e:
+        print(e)    
+        return "User Does Not Exists !"
+
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#get follower 
+def request_get_follower(username):
+    try:
+        user = User.objects.get(username=username)
+        return user.follower_username
+    except Exception as e:
+        print(e)    
+        return "User Does Not Exists !"
+    
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#get acesss 
+def request_get_access(username):
+    try:
+        user = User.objects.get(username=username)
+        return user.access
+    except Exception as e:
+        print(e)    
+        return "User Does Not Exists !"
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#set acesss 
+def request_set_access(username,access_type):
+    try:
+        user = User.objects.get(username=username)
+        user.access = access_type
+        user.save()
+        return "Access set to " + user.access
+    except Exception as e:
+        print(e)    
+        return "User Does Not Exists !"
