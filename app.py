@@ -15,6 +15,8 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 import base64   
 from datetime import datetime, timedelta, timezone
+from Assets_module import *
+from transaction_module import *
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -140,7 +142,6 @@ def logout():
 @jwt_required()
 def my_profile():
     user = get_user(get_jwt_identity())
-    print(user.username)
     response_body = {
         "status":200,
         "data":
@@ -237,6 +238,186 @@ def set_access():
     except Exception as e:
         return jsonify({'error':str(e)})
 
+
+#---------------------------------- Asset APIs ----------------------------#
+@app.route('/api/listAsset',methods=["POST"])
+def listAsset():
+    try:
+        creator = request.args.get('creator')
+        policy_id = request.args.get('policy_id')
+        token_name = request.args.get('token_name')
+        royalti_address = request.args.get('royalti_address')
+        royalti_percentag = request.args.get('royalti_percentag')
+        data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag)
+        response_body = {
+        "status":200,
+        "data": str(data)
+        }
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAllAssets',methods=["GET"])
+def getAllAssets():
+    try:
+        data = get_all_assets()
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAsset',methods=["GET"])
+def getAsset():
+    try:
+        id = request.args.get('asset_id')
+        data = get_assets_by_id(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+@app.route('/api/getAssetByPolicy',methods=["GET"])
+def getAssetByPolicy():
+    try:
+        id = request.args.get('policy_id')
+        data = get_all_assets_from_collection(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+@app.route('/api/getCollections',methods=["GET"])
+def getCollections():
+    try:
+        data = get_collections()
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+@app.route('/api/getAssetByCrator',methods=["GET"])
+def getAssetByCreator():
+    try:
+        id = request.args.get('creator_address')
+
+        data = get_assets_creator(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAssetByDate',methods=["GET"])
+def getAssetByDate():
+    try:
+        start_date = request.args.get('start_date')
+        end_date = request.args.get('end_date')
+        data = get_assets_between_dates(start_date,end_date)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+#---------------------------------- Transactions APIs ----------------------------#
+@app.route('/api/addTransaction',methods=["POST"])
+def addTransaction():
+    try:
+        asset_id = request.args.get('asset_id')
+        event = request.args.get('event')
+        to = request.args.get('to')
+        From = request.args.get('From')
+        data = insert_transaction(asset_id,event, to, From)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAssetTransactions',methods=["GET"])
+def getAssetTransactions():
+    try:
+        asset_id = request.args.get('asset_id')
+        data = get_asset_transactions(asset_id)
+        response_body = {
+                "status":200,
+                "data": data
+                }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getEventTransactions',methods=["GET"])
+def getEventTransactions():
+    try:
+        event = request.args.get('event')
+        data = get_event_transactions(event)
+        response_body = {
+                "status":200,
+                "data": data
+                }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAddressTransactions',methods=["GET"])
+def getAddressTransactions():
+    try:
+        address = request.args.get('address')
+        data = get_address_transactions(address)
+        response_body = {
+                "status":200,
+                "data": data
+                }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getTransactionByDate',methods=["GET"])
+def getTransactionByDate():
+    try:
+        start_date = request.args.get('start_date')
+        end_date = request.args.get('end_date')
+        data = get_transactions_between_dates(start_date,end_date)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")
