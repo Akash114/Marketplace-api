@@ -43,7 +43,6 @@ app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM
 
 jwt = JWTManager(app)
 
-connect_db()
 
 
 # ---------------------------------------------------------------------------------------
@@ -422,4 +421,5 @@ def getTransactionByDate():
         return jsonify({'error':str(e)})
 
 if __name__ == "__main__":
+    connect_db()
     app.run(debug=True, port=5000, host="0.0.0.0")
