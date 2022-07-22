@@ -4,7 +4,8 @@ from models import Transactions
 import uuid
 import os
 from datetime import datetime
-
+DB_NAME="users"
+CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=majority"
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ from datetime import datetime
 def connect_db():
     try:
         load_dotenv()
-        connect(host=os.getenv("CLUSTER_URL"))
+        connect(host=CLUSTER_URL)
         print("Database cluster connected")
     except Exception as e:
         print(e.args)
