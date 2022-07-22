@@ -40,7 +40,7 @@ class Transactions(Document):
     meta = {"collection": "Transactions"}
     asset_id = IntField(min_value=1)
     event = StringField(required=True, max_length=50)
-    to = StringField(required=True, max_length=100)
+    to = StringField(required=True, max_length=500)
     From = StringField(required=True, max_length=500)
     price = StringField(required=True, max_length=100)
     timestamp = DateTimeField(default=datetime.datetime.now)

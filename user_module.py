@@ -15,7 +15,7 @@ CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=maj
 def connect_db():
     try:
         load_dotenv()
-        connect(host=CLUSTER_URL)
+        connect(alias="default",host=CLUSTER_URL)
         print("Database cluster connected")
     except Exception as e:
         print(e.args)
