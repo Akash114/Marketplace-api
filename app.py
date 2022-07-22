@@ -29,16 +29,17 @@ load_dotenv()
 app.config['Access-Control-Allow-Origin'] = '*'
 app.config["Access-Control-Allow-Headers"]="Content-Type"
 app.config['DEBUG'] = os.getenv('DEBUG')
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-BACKEND_URL=os.getenv("BACKEND_URL")
-FRONTEND_URL=os.getenv("FRONTEND_URL")
-AUTH=os.getenv('AUTH')
-ID=os.getenv('ID')
-algorithm = os.getenv("ALGORITHM")
 
+AUTH="trxquUHCitAZOTlVWAre"
+ID="6194228"
+BACKEND_URL="https://api.demo-server.tk/"
+FRONTEND_URL="http://demo-server.tk/nft-frontend-react"
+ALGORITHM="HS256"
+DEBUG=True
+app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
 
 jwt = JWTManager(app)
 
@@ -353,7 +354,8 @@ def addTransaction():
         event = request.args.get('event')
         to = request.args.get('to')
         From = request.args.get('From')
-        data = insert_transaction(asset_id,event, to, From)
+        price = request.args.get('price')
+        data = insert_transaction(asset_id,event, to, From, price)
         response_body = {
             "status":200,
             "data": data

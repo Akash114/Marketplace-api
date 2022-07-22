@@ -42,4 +42,5 @@ class Transactions(Document):
     event = StringField(required=True, max_length=50)
     to = StringField(required=True, max_length=100)
     From = StringField(required=True, max_length=100)
+    price = StringField(required=True, max_length=100)
     timestamp = DateTimeField(default=datetime.datetime.now)

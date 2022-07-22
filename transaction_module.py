@@ -4,7 +4,8 @@ from models import Transactions
 import uuid
 import os
 from datetime import datetime
-
+DB_NAME="users"
+CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=majority"
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ from datetime import datetime
 def connect_db():
     try:
         load_dotenv()
-        connect(host=os.getenv("CLUSTER_URL"))
+        connect(host=CLUSTER_URL)
         print("Database cluster connected")
     except Exception as e:
         print(e.args)
@@ -23,12 +24,13 @@ def connect_db():
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 #Inter Assets Data To DB 
-def insert_transaction(asset_id,event, to, From):
+def insert_transaction(asset_id,event, to, From,price):
     new_asset = Transactions(
         asset_id = asset_id,
         event = event,
         to = to,
-        From = From
+        From = From,
+        price = price
     )
     new_asset.save()
     return ({'id': new_asset["asset_id"]})
@@ -43,6 +45,7 @@ def get_list(tansactions):
         "event":data.event,
         "to":data.to,
         "From":data.From,
+        'price':data.price,
         "timestamp": data.timestamp
         }
         )
