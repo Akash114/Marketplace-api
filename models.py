@@ -20,10 +20,10 @@ class User(Document):
 class Assets(Document):
     meta = {"collection": "Assets"}
     asset_id = IntField(min_value=1)
-    creator = StringField(required=True, max_length=100)
-    policy_id = StringField(required=True, max_length=100)
-    token_name = StringField(required=True, max_length=100)
-    royalti_address = StringField(required=True, max_length=100)
+    creator = StringField(required=True, max_length=500)
+    policy_id = StringField(required=True, max_length=500)
+    token_name = StringField(required=True, max_length=500)
+    royalti_address = StringField(required=True, max_length=500)
     royalti_percentag = IntField()
     like = ListField()
     listing_date = DateTimeField()
