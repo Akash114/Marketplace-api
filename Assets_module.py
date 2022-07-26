@@ -25,7 +25,7 @@ from datetime import datetime
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 #Inter Assets Data To DB 
-def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag):
+def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag,asssetKey,price,collectionId):
     try:
         assets = Assets.objects.filter(policy_id = policy_id).filter(token_name= token_name)
         print(assets)
@@ -41,6 +41,9 @@ def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percenta
             token_name = token_name,
             royalti_address = royalti_address,
             royalti_percentag = royalti_percentag,
+            asssetKey = asssetKey,
+            price = price,
+            collectionId = collectionId,
             like = []
         )
         new_asset.save()
@@ -61,6 +64,9 @@ def get_list(assets):
         "like":data.like,
         "listing_date":data.listing_date,
         "modified_date":data.modified_date,
+        "asssetKey":data.asssetKey,
+        "price":data.price,
+        "collectionId":data.collectionId,
         }
         )
     return asset

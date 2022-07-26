@@ -40,6 +40,8 @@ FRONTEND_URL="http://demo-server.tk/nft-frontend-react"
 ALGORITHM="HS256"
 DEBUG=True
 app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
 jwt = JWTManager(app)
 
@@ -249,7 +251,10 @@ def listAsset():
         token_name = request.args.get('token_name')
         royalti_address = request.args.get('royalti_address')
         royalti_percentag = request.args.get('royalti_percentag')
-        data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag)
+        asssetKey = request.args.get('asssetKey')
+        price = request.args.get('price')
+        collectionId = request.args.get('collectionId')
+        data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag,asssetKey,price,collectionId)
         response_body = {
         "status":200,
         "data": str(data)

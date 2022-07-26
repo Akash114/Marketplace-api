@@ -1,6 +1,7 @@
+from unicodedata import decimal
 import uuid
 from mongoengine.document import Document
-from mongoengine.fields import EmailField, StringField, UUIDField, ListField, IntField, DateTimeField
+from mongoengine.fields import EmailField, StringField, UUIDField, ListField, IntField, DateTimeField,DecimalField
 import datetime
 
 # inheriting from Document class
@@ -26,6 +27,9 @@ class Assets(Document):
     token_name = StringField(required=True, max_length=500)
     royalti_address = StringField(required=True, max_length=500)
     royalti_percentag = IntField()
+    asssetKey = StringField(required=True, max_length=500)
+    price = DecimalField(required=True)
+    collectionId = StringField(required=True, max_length=500)
     like = ListField()
     listing_date = DateTimeField()
     modified_date = DateTimeField(default=datetime.datetime.now)
