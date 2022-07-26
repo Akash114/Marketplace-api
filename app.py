@@ -43,6 +43,7 @@ app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM
 
 jwt = JWTManager(app)
 
+connect_db()
 
 
 # ---------------------------------------------------------------------------------------
@@ -314,6 +315,21 @@ def getCollections():
         return jsonify({'error':str(e)})
 
 
+@app.route('/api/getCollectionByUser',methods=["GET"])
+def getCollectionByUser():
+    try:
+        username = request.args.get('username')
+        data = get_users_collection(username)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+
+    except Exception as e:
+        print(e)
+
+
 
 @app.route('/api/getAssetByCrator',methods=["GET"])
 def getAssetByCreator():
@@ -359,6 +375,41 @@ def addTransaction():
             "status":200,
             "data": data
             }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/addCollection',methods=["POST"])
+@jwt_required()
+def addCollection():
+    try:
+        user = get_user(get_jwt_identity())
+        name = request.args.get('name')
+        image = request.args.get('image')
+        url = request.args.get('url')
+        category = request.args.get('category')
+        desc = request.args.get('desc')
+        print(user)
+        data = insert_collection(user.username,name,image, url, desc,category)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        print(e)
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAllCollections',methods=["GET"])
+def getAllCollections():
+    try:
+        data = get_all_collection()
+        response_body = {
+                "status":200,
+                "data": data
+                }       
         return response_body
     except Exception as e:
         return jsonify({'error':str(e)})
@@ -421,5 +472,4 @@ def getTransactionByDate():
         return jsonify({'error':str(e)})
 
 if __name__ == "__main__":
-    connect_db()
     app.run(debug=True, port=5000, host="0.0.0.0")

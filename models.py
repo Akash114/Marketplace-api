@@ -1,3 +1,4 @@
+import uuid
 from mongoengine.document import Document
 from mongoengine.fields import EmailField, StringField, UUIDField, ListField, IntField, DateTimeField
 import datetime
@@ -44,3 +45,14 @@ class Transactions(Document):
     From = StringField(required=True, max_length=500)
     price = StringField(required=True, max_length=100)
     timestamp = DateTimeField(default=datetime.datetime.now)
+
+
+class Collection(Document):
+    meta = {"collection": "Collections"}
+    collection_id = IntField(min_value=1)
+    username=StringField(required=True, max_length=100)
+    name = StringField(required=True, max_length=500)
+    image = StringField(required=True, max_length=500)
+    url = StringField(required=True, max_length=1500)
+    category = StringField(required=True, max_length=500)
+    desc = StringField(required=True, max_length=5000)

@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from mongoengine import connect
-from models import Transactions
+from models import Transactions, Collection
 import uuid
 import os
 from datetime import datetime
@@ -36,6 +36,21 @@ def insert_transaction(asset_id,event, to, From,price):
     return ({'id': new_asset["asset_id"]})
 
 
+def insert_collection(username,name,image, url, desc,category):
+    print(name,image, url, desc,category)
+    new_asset = Collection(
+        collection_id = Collection.objects.count() + 1,
+        username=username,
+        name = name,
+        image = image,
+        url = url,
+        category = category,
+        desc = desc
+    )
+    new_asset.save()
+    return ({'id': new_asset["collection_id"]})
+
+
 def get_list(tansactions):
     asset = []
     for data in tansactions:
@@ -50,6 +65,55 @@ def get_list(tansactions):
         }
         )
     return asset
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#Get All collection Data 
+def get_all_collection():
+    try:
+        collections = Collection.objects.all()
+        asset = []
+        for data in collections:
+            asset.append(
+                {
+            "collection_id": data.collection_id,
+            "username":data.username,
+            "name":data.name,
+            "image":data.image,
+            'url':data.url,
+            "category": data.category,
+            "desc":data.desc
+            }
+            )
+        return asset
+    except Exception as e:
+        return e    
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#Get All collection Data 
+def get_users_collection(username):
+    try:
+        collections = Collection.objects.filter(username=username)
+        asset = []
+        for data in collections:
+            asset.append(
+                {
+            "collection_id": data.collection_id,
+            "username":data.username,
+            "name":data.name,
+            "image":data.image,
+            'url':data.url,
+            "category": data.category,
+            "desc":data.desc
+            }
+            )
+        return asset
+    except Exception as e:
+        return e    
 
 
 # ---------------------------------------------------------------------------------------
