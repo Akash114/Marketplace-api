@@ -114,6 +114,18 @@ def get_all_assets_from_collection(policy_id):
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 #Get collection Data 
+def get_assets_by_collection_id(collection_id):
+    try:
+        assets = Assets.objects.filter(collectionId=collection_id)
+        data = get_list(assets)
+        return data
+    except Exception as e:
+        return e
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#Get collection Data 
 def get_collections():
     try:
         data = Assets.objects.order_by().values_list('policy_id').distinct('policy_id')

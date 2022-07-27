@@ -40,7 +40,7 @@ FRONTEND_URL="http://demo-server.tk/nft-frontend-react"
 ALGORITHM="HS256"
 DEBUG=True
 app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
 jwt = JWTManager(app)
@@ -305,6 +305,19 @@ def getAssetByPolicy():
     except Exception as e:
         return jsonify({'error':str(e)})
 
+
+@app.route('/api/getAssetByCollection',methods=["GET"])
+def getAssetByCollection():
+    try:
+        id = request.args.get('collection_id')
+        data = get_assets_by_collection_id(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
 
 
 @app.route('/api/getCollections',methods=["GET"])
