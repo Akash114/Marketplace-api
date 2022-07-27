@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from mongoengine import connect
-from models import Assets
+from models import Assets, Collection
 import uuid
 import os
 from datetime import datetime
@@ -104,6 +104,21 @@ def get_assets_by_id(id):
 def get_all_assets_from_collection(policy_id):
     try:
         assets = Assets.objects.filter(policy_id=policy_id)
+        data = get_list(assets)
+        return data
+    except Exception as e:
+        return e
+
+
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#Get collection Data 
+def get_collection_by_id(collection_id):
+    try:
+        assets = Collection.objects.filter(collectionId=collection_id)
         data = get_list(assets)
         return data
     except Exception as e:

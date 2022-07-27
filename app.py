@@ -320,6 +320,23 @@ def getAssetByCollection():
         return jsonify({'error':str(e)})
 
 
+
+@app.route('/api/getCollectionById',methods=["GET"])
+def getCollectionById():
+    try:
+        id = request.args.get('collection_id')
+        data = get_collection_by_id(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+
 @app.route('/api/getCollections',methods=["GET"])
 def getCollections():
     try:
