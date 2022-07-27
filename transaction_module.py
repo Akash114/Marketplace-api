@@ -144,6 +144,31 @@ def get_collection_by_id(collection_id):
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
+#Get collection Data 
+def get_collection_by_category(category):
+    try:
+        assets = Collection.objects.filter(category=category)
+        asset = []
+        for data in assets:
+            asset.append(
+                {
+            "collection_id": data.collection_id,
+            "username":data.username,
+            "name":data.name,
+            "image":data.image,
+            'url':data.url,
+            "category": data.category,
+            "desc":data.desc
+            }
+            )
+        return asset
+    except Exception as e:
+        return e
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
 #Get All assets Data 
 def get_all_transactions():
     try:

@@ -335,6 +335,20 @@ def getCollectionById():
         return jsonify({'error':str(e)})
 
 
+@app.route('/api/getCollectionByCategory',methods=["GET"])
+def getCollectionByCategory():
+    try:
+        id = request.args.get('category')
+        data = get_collection_by_category(id)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
 
 
 @app.route('/api/getCollections',methods=["GET"])
