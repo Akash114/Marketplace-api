@@ -1,7 +1,9 @@
+from typing import Dict
 from unicodedata import decimal
 import uuid
+from xmlrpc.client import Boolean
 from mongoengine.document import Document
-from mongoengine.fields import EmailField, StringField, UUIDField, ListField, IntField, DateTimeField,DecimalField
+from mongoengine.fields import EmailField, StringField, UUIDField, ListField, IntField, DateTimeField,DecimalField,BooleanField,DictField
 import datetime
 
 # inheriting from Document class
@@ -31,9 +33,9 @@ class Assets(Document):
     price = DecimalField(required=True)
     collectionId = StringField(required=True, max_length=500)
     like = ListField()
+    data = DictField(required=True)
     listing_date = DateTimeField()
     modified_date = DateTimeField(default=datetime.datetime.now)
-
     def save(self, *args, **kwargs):
         if not self.listing_date:
             self.listing_date = datetime.datetime.now()
@@ -60,3 +62,11 @@ class Collection(Document):
     url = StringField(required=True, max_length=1500)
     category = StringField(required=True, max_length=500)
     desc = StringField(required=True, max_length=5000)
+    isFeatured = BooleanField()
+    listing_date = DateTimeField()
+    modified_date = DateTimeField(default=datetime.datetime.now)
+    def save(self, *args, **kwargs):
+        if not self.listing_date:
+            self.listing_date = datetime.datetime.now()
+        self.modified_date = datetime.datetime.now()
+        return super(Assets, self).save(*args, **kwargs)

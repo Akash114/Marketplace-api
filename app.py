@@ -36,7 +36,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 AUTH="trxquUHCitAZOTlVWAre"
 ID="6194228"
 BACKEND_URL="https://api.demo-server.tk/"
-FRONTEND_URL="http://demo-server.tk/nft-frontend-react"
+FRONTEND_URL="https://nft.demo-server.tk/"
 ALGORITHM="HS256"
 DEBUG=True
 app.config["JWT_SECRET_KEY"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
@@ -246,15 +246,16 @@ def set_access():
 @app.route('/api/listAsset',methods=["POST"])
 def listAsset():
     try:
-        creator = request.args.get('creator')
-        policy_id = request.args.get('policy_id')
-        token_name = request.args.get('token_name')
-        royalti_address = request.args.get('royalti_address')
-        royalti_percentag = request.args.get('royalti_percentag')
-        asssetKey = request.args.get('asssetKey')
-        price = request.args.get('price')
-        collectionId = request.args.get('collectionId')
-        data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag,asssetKey,price,collectionId)
+        creator = request.json.get('creator')
+        policy_id = request.json.get('policy_id')
+        token_name = request.json.get('token_name')
+        royalti_address = request.json.get('royalti_address')
+        royalti_percentag = request.json.get('royalti_percentag')
+        asssetKey = request.json.get('asssetKey')
+        price = request.json.get('price')
+        collectionId = request.json.get('collectionId')
+        data_= request.json.get('data')
+        data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag,asssetKey,price,collectionId,data_)
         response_body = {
         "status":200,
         "data": str(data)
