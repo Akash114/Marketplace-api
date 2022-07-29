@@ -284,24 +284,22 @@ def search(query):
 
 
 def add_featured_collection(id):
-    # try:
-    collections = Collections.objects.get(collection_id= id)
-    print(collections)
-    print(collections.isFeatured)
-    collections.isFeatured = True
-    collections.save()
-    return collections.id + "is Added To Featured Collection"
-    # except Exception as e:
-    #     print(e)
-    #     return e
+    try:
+        collections = Collections.objects.get(collection_id= id)
+        collections.update(isFeatured=True)
+        # collections.save()
+        return str(collections.name) + " is Added To Featured Collection"
+    except Exception as e:
+        print(e)
+        return e
 
 def remove_featured_collection(id):
     try:
-        collections = Collections.objects.filter(collection_id= id)
-        collections.isFeatured = False
-        collections.save()
-        return collections.id + "is Removed To Featured Collection"
+        collections = Collections.objects.get(collection_id= id)
+        collections.update(isFeatured=False)
+        return str(collections.name) + " is Removed To Featured Collection"
     except Exception as e:
+        print(e)
         return e        
 
 

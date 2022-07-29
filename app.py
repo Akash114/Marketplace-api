@@ -564,7 +564,7 @@ def removeFeaturedCollection():
         return jsonify({'error':str(e)})
 
 
-@app.route('/api/removeHotCollection')
+@app.route('/api/getHotCollection')
 def featuredCollection():
     try:
         data = get_featured_collection()
