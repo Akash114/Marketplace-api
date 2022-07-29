@@ -36,7 +36,7 @@ def insert_transaction(asset_id,event, to, From,price):
     return ({'id': new_asset["asset_id"]})
 
 
-def get_list(tansactions):
+def get_list_tansaction(tansactions):
     asset = []
     for data in tansactions:
         asset.append(
@@ -59,7 +59,7 @@ def get_list(tansactions):
 def get_all_transactions():
     try:
         transaction = Transactions.objects.all()
-        data = get_list(transaction)
+        data = get_list_tansaction(transaction)
         return data
     except Exception as e:
         return e
@@ -72,7 +72,7 @@ def get_all_transactions():
 def get_asset_transactions(id):
     try:
         transaction = Transactions.objects.filter(asset_id=id)
-        data = get_list(transaction)
+        data = get_list_tansaction(transaction)
         return data
     except Exception as e:
         return e
@@ -85,7 +85,7 @@ def get_asset_transactions(id):
 def get_event_transactions(event):
     try:
         transaction = Transactions.objects.filter(event=event)
-        data = get_list(transaction)
+        data = get_list_tansaction(transaction)
         return data
     except Exception as e:
         return e
@@ -98,7 +98,7 @@ def get_event_transactions(event):
 def get_address_transactions(address):
     try:
         transaction = Transactions.objects.filter(to=address) or Transactions.objects.filter(From=address)
-        data = get_list(transaction)
+        data = get_list_tansaction(transaction)
         return data
     except Exception as e:
         print(e)
@@ -114,7 +114,7 @@ def get_transactions_between_dates(start_date,end_date):
         start_date = datetime.strptime(start_date, '%d/%m/%Y')
         end_date = datetime.strptime(end_date, '%d/%m/%Y')
         assets = Transactions.objects.filter(timestamp__gte=start_date,timestamp__lte=end_date)
-        data = get_list(assets)
+        data = get_list_tansaction(assets)
         return data
     except Exception as e:
         print(e)

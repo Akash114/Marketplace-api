@@ -521,5 +521,62 @@ def getTransactionByDate():
     except Exception as e:
         return jsonify({'error':str(e)})
 
+@app.route('/api/search',methods=["POST"])
+def getSearchResult():
+    try:
+        query = request.json.get('query')
+        data = search(query)
+        response_body = {
+            "status":200,
+            "data": data
+            } 
+        return response_body 
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+@app.route('/api/makeFeaturedCollection')
+def addFeaturedCollection():
+    try:
+        collection_id = request.json.get('collection_id')
+        data = add_featured_collection(collection_id)
+        response_body = {
+            "status":200,
+            "data": data
+            } 
+        return response_body 
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/removeFeaturedCollection')
+def removeFeaturedCollection():
+    try:
+        collection_id = request.json.get('collection_id')
+        data = remove_featured_collection(collection_id)
+        response_body = {
+            "status":200,
+            "data": data
+            } 
+        return response_body 
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/removeHotCollection')
+def featuredCollection():
+    try:
+        data = get_featured_collection()
+        response_body = {
+            "status":200,
+            "data": data
+            } 
+        return response_body 
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")

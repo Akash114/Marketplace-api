@@ -1,6 +1,7 @@
+import re
 from dotenv import load_dotenv
 from mongoengine import connect
-from models import Assets, Collection
+from models import Assets, Collections, User
 import uuid
 import os
 from datetime import datetime
@@ -51,7 +52,7 @@ def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percenta
         return ({'id': new_asset["asset_id"]})
 
 
-def get_list(assets):
+def get_list_asset(assets):
     asset = []
     for data in assets:
         asset.append(
@@ -80,7 +81,7 @@ def get_list(assets):
 def get_all_assets():
     try:
         assets = Assets.objects.all()
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         return e
@@ -93,7 +94,7 @@ def get_all_assets():
 def get_assets_by_id(id):
     try:
         assets = Assets.objects.filter(asset_id=id)
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         return e
@@ -106,7 +107,7 @@ def get_assets_by_id(id):
 def get_all_assets_from_collection(policy_id):
     try:
         assets = Assets.objects.filter(policy_id=policy_id)
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         return e
@@ -118,7 +119,7 @@ def get_all_assets_from_collection(policy_id):
 def get_assets_by_collection_id(collection_id):
     try:
         assets = Assets.objects.filter(collectionId=collection_id)
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         return e
@@ -143,7 +144,7 @@ def get_assets_creator(creator):
     try:
         assets = Assets.objects.filter(creator=creator)
         print(assets)
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         return e
@@ -158,7 +159,7 @@ def get_assets_between_dates(start_date,end_date):
         start_date = datetime.strptime(start_date, '%d/%m/%Y')
         end_date = datetime.strptime(end_date, '%d/%m/%Y')
         assets = Assets.objects.filter(listing_date__gte=start_date,listing_date__lte=end_date)
-        data = get_list(assets)
+        data = get_list_asset(assets)
         return data
     except Exception as e:
         print(e)
@@ -171,21 +172,9 @@ def get_assets_between_dates(start_date,end_date):
 #Get All collection Data 
 def get_all_collection():
     try:
-        collections = Collection.objects.all()
-        asset = []
-        for data in collections:
-            asset.append(
-                {
-            "collection_id": data.collection_id,
-            "username":data.username,
-            "name":data.name,
-            "image":data.image,
-            'url':data.url,
-            "category": data.category,
-            "desc":data.desc
-            }
-            )
-        return asset
+        collections = Collections.objects.all()
+        data = get_list_collection(collections)
+        return data
     except Exception as e:
         return e    
 
@@ -196,21 +185,9 @@ def get_all_collection():
 #Get All collection Data 
 def get_users_collection(username):
     try:
-        collections = Collection.objects.filter(username=username)
-        asset = []
-        for data in collections:
-            asset.append(
-                {
-            "collection_id": data.collection_id,
-            "username":data.username,
-            "name":data.name,
-            "image":data.image,
-            'url':data.url,
-            "category": data.category,
-            "desc":data.desc
-            }
-            )
-        return asset
+        collections = Collections.objects.filter(username=username)
+        data = get_list_collection(collections)
+        return data
     except Exception as e:
         return e    
 
@@ -221,21 +198,10 @@ def get_users_collection(username):
 #Get collection Data 
 def get_collection_by_id(collection_id):
     try:
-        assets = Collection.objects.filter(collection_id=collection_id)
-        asset = []
-        for data in assets:
-            asset.append(
-                {
-            "collection_id": data.collection_id,
-            "username":data.username,
-            "name":data.name,
-            "image":data.image,
-            'url':data.url,
-            "category": data.category,
-            "desc":data.desc
-            }
-            )
-        return asset
+        assets = Collections.objects.filter(collection_id=collection_id)
+        data = get_list_collection(assets)
+        return data
+
     except Exception as e:
         return e
 
@@ -246,36 +212,103 @@ def get_collection_by_id(collection_id):
 #Get collection Data 
 def get_collection_by_category(category):
     try:
-        assets = Collection.objects.filter(category=category)
-        asset = []
-        for data in assets:
-            asset.append(
-                {
-            "collection_id": data.collection_id,
-            "username":data.username,
-            "name":data.name,
-            "image":data.image,
-            'url':data.url,
-            "category": data.category,
-            "desc":data.desc
-            }
-            )
-        return asset
+        assets = Collections.objects.filter(category=category)
+        data = get_list_collection(assets)
+        return data
     except Exception as e:
         return e
 
 
 def insert_collection(username,name,image, url, desc,category):
-    print(name,image, url, desc,category)
-    new_asset = Collection(
-        collection_id = Collection.objects.count() + 1,
-        username=username,
-        name = name,
-        image = image,
-        url = url,
-        category = category,
-        desc = desc
-    )
-    new_asset.save()
-    return ({'id': new_asset["collection_id"]})
+    try:
+        new_asset = Collections(
+            collection_id = Collections.objects.count() + 1,
+            username=username,
+            name = name,
+            image = image,
+            url = url,
+            category = category,
+            desc = desc,
+            isFeatured = False
+        )
+        new_asset.save()
+        return ({'id': new_asset["collection_id"]})
+    except Exception as e:
+        print(e)
+        return e
 
+
+def get_list_collection(collections):
+    asset = []
+    for data in collections:
+        asset.append(
+            {
+        "collection_id": data.collection_id,
+        "username":data.username,
+        "name":data.name,
+        "image":data.image,
+        'url':data.url,
+        "category": data.category,
+        "desc":data.desc
+        }
+        )
+    return asset
+
+def get_list_user(users):
+    all_users = []
+    for user in users:
+        all_users.append(
+            {
+        "name": user.name,
+        "username":user.username,
+        "picture":user.picture,
+        "email":user.email
+        }
+        )
+    return all_users
+
+
+def search(query):
+    try:
+        collections = Collections.objects.filter(name= re.compile('.*'+ query +'.*', re.IGNORECASE)) or Collections.objects.filter(category=re.compile('.*'+ query +'.*', re.IGNORECASE)) or Collections.objects.filter(desc=re.compile('.*'+ query +'.*', re.IGNORECASE))
+        users = User.objects.filter(name= re.compile('.*'+ query +'.*', re.IGNORECASE)) or User.objects.filter(username=re.compile('.*'+ query +'.*', re.IGNORECASE)) or User.objects.filter(email=re.compile('.*'+ query +'.*', re.IGNORECASE))
+        asset = Assets.objects.filter(token_name= re.compile('.*'+ query +'.*', re.IGNORECASE)) or Assets.objects.filter(listing_date=re.compile('.*'+ query +'.*', re.IGNORECASE)) or Assets.objects.filter(policy_id=re.compile('.*'+ query +'.*', re.IGNORECASE)) or Assets.objects.filter(creator=re.compile('.*'+ query +'.*', re.IGNORECASE))
+        data = {
+          'collection_data':get_list_collection(collections),
+          'user_data':get_list_user(users),
+          'asset_data':get_list_asset(asset)
+        }
+        return data
+    except Exception as e:
+        return e    
+
+
+def add_featured_collection(id):
+    # try:
+    collections = Collections.objects.get(collection_id= id)
+    print(collections)
+    print(collections.isFeatured)
+    collections.isFeatured = True
+    collections.save()
+    return collections.id + "is Added To Featured Collection"
+    # except Exception as e:
+    #     print(e)
+    #     return e
+
+def remove_featured_collection(id):
+    try:
+        collections = Collections.objects.filter(collection_id= id)
+        collections.isFeatured = False
+        collections.save()
+        return collections.id + "is Removed To Featured Collection"
+    except Exception as e:
+        return e        
+
+
+def get_featured_collection():
+    try:
+        collections = Collections.objects.filter(isFeatured= True)
+        data = get_list_collection(collections)
+        return data
+    except Exception as e:
+        return e        

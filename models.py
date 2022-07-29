@@ -53,7 +53,7 @@ class Transactions(Document):
     timestamp = DateTimeField(default=datetime.datetime.now)
 
 
-class Collection(Document):
+class Collections(Document):
     meta = {"collection": "Collections"}
     collection_id = IntField(min_value=1)
     username=StringField(required=True, max_length=100)
