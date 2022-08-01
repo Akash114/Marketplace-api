@@ -33,7 +33,7 @@ class Assets(Document):
     royalti_percentag = IntField()
     asssetKey = StringField(required=True, max_length=500)
     price = DecimalField(required=True)
-    collectionId = StringField(required=True, max_length=500)
+    collectionId = IntField()
     like = ListField()
     data = DictField(required=True)
     listing_date = DateTimeField()

@@ -34,7 +34,6 @@ def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percenta
             print(1/0)
         return ("Asset already exists")
     except Exception as e:
-        print(data)
         new_asset = Assets(
             asset_id = Assets.objects.count() + 1,
             creator = creator,
@@ -42,11 +41,11 @@ def insert_asset(creator,policy_id, token_name, royalti_address,royalti_percenta
             token_name = token_name,
             royalti_address = royalti_address,
             royalti_percentag = royalti_percentag,
-            asssetKey = asssetKey,
+            asssetKey = str(asssetKey),
             price = price,
             collectionId = collectionId,
             like = [],
-            data = json.loads(data)
+            data = data
         )
         new_asset.save()
         return ({'id': new_asset["asset_id"]})
