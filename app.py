@@ -182,7 +182,7 @@ def update_user_profile():
             user.update(username=username)
         if(name): 
             user.update(name = name)
-        if(picture): 
+        if(picture):  
             user.update(picture = picture)
         if(email): 
             user.update(email = email)
@@ -212,6 +212,21 @@ def user_profile():
 
     return response_body
 
+
+@app.route('/api/profileByUsername')
+def user_profile_by_username():
+    try:
+        username = request.json.get('username') 
+        all_users = get_user_by_usename(username)
+        response_body = {
+                "status":200,
+                "data":all_users
+            }
+
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+    return response_body
 
 
 # ---------------------------------------------------------------------------------------

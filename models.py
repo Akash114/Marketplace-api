@@ -10,11 +10,12 @@ import datetime
 class User(Document):
     meta = {"collection": "User"}
     uuid=UUIDField()
-    username=StringField(required=True, max_length=100)
+    username=StringField(unique=True,required=True, max_length=100)
     name=StringField(required=True, max_length=100)
     picture=StringField(required=True)
     email=EmailField()
-    bio = StringField(required=True, max_length=10000)
+    bio = StringField(required=False,max_length=10000)
+    wallete_address = StringField(required=False,max_length=500)
     srks_id=StringField(required=True,max_length=100)
     following_username = ListField()
     follower_username = ListField()
