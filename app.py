@@ -168,7 +168,7 @@ def my_profile():
 
 
 
-@app.route('/api/updateProfile')
+@app.route('/api/updateProfile',methods=["POST"])
 @jwt_required()
 def update_user_profile():
     try:
@@ -177,6 +177,9 @@ def update_user_profile():
         name = request.json.get('name')
         picture = request.json.get('picture')
         email = request.json.get('email')
+        bio = request.json.get('bio')
+        wallete_address = request.json.get('wallete_address')
+
         print(user)
         if(username): 
             user.update(username=username)
@@ -186,6 +189,10 @@ def update_user_profile():
             user.update(picture = picture)
         if(email): 
             user.update(email = email)
+        if(bio): 
+            user.update(bio = bio)
+        if(wallete_address): 
+            user.update(wallete_address = wallete_address)
 
         response_body = {
                 "status":200,
@@ -261,7 +268,8 @@ def get_users():
         return jsonify({'error':str(e)})
 
 
-@app.route('/api/addFollower',methods=["POST"])
+@app.route('/api/addFollower'
+)
 @jwt_required()
 def add_follower():
     try:
