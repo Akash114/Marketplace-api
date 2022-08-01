@@ -54,8 +54,25 @@ def insert_into_db(username,name, email, picture,id):
 #Get Single User's Data based On srks_id 
 def get_user(srks_id):
     try:
-        user = User.objects.get(srks_id=srks_id)
-        return user
+        data = User.objects.filter(srks_id=srks_id)
+        users = []
+        for user in data:
+            users.append({
+            "status":200,
+            "data":
+            {
+                "name": user.name,
+                "username":user.username,
+                "picture":user.picture,
+                "email":user.email,
+                "bio":user.bio,
+                "following_username":user.following_username,
+                "follower_username":user.follower_username,
+                "liked_asset":user.liked_asset,
+                "access":user.access
+            }
+            })
+        return users
     except:
         return False
 
@@ -126,3 +143,4 @@ def request_set_access(username,access_type):
     except Exception as e:
         print(e)    
         return "User Does Not Exists !"
+

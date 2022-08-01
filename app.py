@@ -144,19 +144,74 @@ def logout():
 @app.route('/api/profile')
 @jwt_required()
 def my_profile():
-    user = get_user(get_jwt_identity())
-    response_body = {
-        "status":200,
-        "data":
-        {
-        "name": user.name,
-        "username":user.username,
-        "picture":user.picture,
-        "email":user.email
+    try:
+        user = get_user(get_jwt_identity())
+        response_body = {
+            "status":200,
+            "data":
+            {
+                "name": user.name,
+                "username":user.username,
+                "picture":user.picture,
+                "email":user.email,
+                "bio":user.bio,
+                "following_username":user.following_username,
+                "follower_username":user.follower_username,
+                "liked_asset":user.liked_asset,
+                "access":user.access
+            }
         }
-    }
+    except Exception as e:
+        return jsonify({'error':str(e)})
 
     return response_body
+
+
+
+@app.route('/api/updateProfile')
+@jwt_required()
+def update_user_profile():
+    try:
+        user = User.objects.filter(srks_id=get_jwt_identity())
+        username = request.json.get('username')
+        name = request.json.get('name')
+        picture = request.json.get('picture')
+        email = request.json.get('email')
+        print(user)
+        if(username): 
+            user.update(username=username)
+        if(name): 
+            user.update(name = name)
+        if(picture): 
+            user.update(picture = picture)
+        if(email): 
+            user.update(email = email)
+
+        response_body = {
+                "status":200,
+                "data":"User Data Updated Succesfully !"
+            }
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+    return response_body
+
+
+@app.route('/api/profileBySksid')
+def user_profile():
+    try:
+        srks_id = request.json.get('srks_id') 
+        all_users = get_user(srks_id)
+        response_body = {
+                "status":200,
+                "data":all_users
+            }
+
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+    return response_body
+
 
 
 # ---------------------------------------------------------------------------------------
@@ -165,22 +220,30 @@ def my_profile():
 #Get All User Profie 
 @app.route('/api/getUsers')
 def get_users():
-    users = get_all_users()
-    all_users = []
-    for user in users:
-        all_users.append(
-            {
-        "name": user.name,
-        "username":user.username,
-        "picture":user.picture,
-        "email":user.email
+    try:
+        users = get_all_users()
+        all_users = []
+        for user in users:
+            all_users.append(
+                {
+            "name": user.name,
+            "username":user.username,
+            "picture":user.picture,
+            "email":user.email,
+            "bio":user.bio,
+            "following_username":user.following_username,
+            "follower_username":user.follower_username,
+            "liked_asset":user.liked_asset,
+            "access":user.access
+            }
+            )
+        response_body = {
+            "status":200,
+            "data":all_users
         }
-        )
-    response_body = {
-        "status":200,
-        "data":all_users
-    }
-    return response_body
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
 
 
 @app.route('/api/addFollower',methods=["POST"])

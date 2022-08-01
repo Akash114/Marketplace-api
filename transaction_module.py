@@ -62,7 +62,7 @@ def get_all_transactions():
         data = get_list_tansaction(transaction)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ def get_asset_transactions(id):
         data = get_list_tansaction(transaction)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ def get_event_transactions(event):
         data = get_list_tansaction(transaction)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ def get_address_transactions(address):
         return data
     except Exception as e:
         print(e)
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -118,4 +118,4 @@ def get_transactions_between_dates(start_date,end_date):
         return data
     except Exception as e:
         print(e)
-        return e
+        return str(e)

@@ -14,6 +14,7 @@ class User(Document):
     name=StringField(required=True, max_length=100)
     picture=StringField(required=True)
     email=EmailField()
+    bio = StringField(required=True, max_length=10000)
     srks_id=StringField(required=True,max_length=100)
     following_username = ListField()
     follower_username = ListField()

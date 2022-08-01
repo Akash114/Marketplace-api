@@ -84,7 +84,7 @@ def get_all_assets():
         data = get_list_asset(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ def get_assets_by_id(id):
         data = get_list_asset(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ def get_all_assets_from_collection(policy_id):
         data = get_list_asset(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ def get_assets_by_collection_id(collection_id):
         data = get_list_asset(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ def get_collections():
         data = Assets.objects.order_by().values_list('policy_id').distinct('policy_id')
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ def get_assets_creator(creator):
         data = get_list_asset(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ def get_assets_between_dates(start_date,end_date):
         return data
     except Exception as e:
         print(e)
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ def get_all_collection():
         data = get_list_collection(collections)
         return data
     except Exception as e:
-        return e    
+        return str(e)    
 
 
 # ---------------------------------------------------------------------------------------
@@ -189,7 +189,7 @@ def get_users_collection(username):
         data = get_list_collection(collections)
         return data
     except Exception as e:
-        return e    
+        return str(e)    
 
 
 # ---------------------------------------------------------------------------------------
@@ -203,7 +203,7 @@ def get_collection_by_id(collection_id):
         return data
 
     except Exception as e:
-        return e
+        return str(e)
 
 
 # ---------------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ def get_collection_by_category(category):
         data = get_list_collection(assets)
         return data
     except Exception as e:
-        return e
+        return str(e)
 
 
 def insert_collection(username,name,image, url, desc,category):
@@ -235,7 +235,7 @@ def insert_collection(username,name,image, url, desc,category):
         return ({'id': new_asset["collection_id"]})
     except Exception as e:
         print(e)
-        return e
+        return str(e)
 
 
 def get_list_collection(collections):
@@ -280,7 +280,7 @@ def search(query):
         }
         return data
     except Exception as e:
-        return e    
+        return str(e)    
 
 
 def add_featured_collection(id):
@@ -291,7 +291,8 @@ def add_featured_collection(id):
         return str(collections.name) + " is Added To Featured Collection"
     except Exception as e:
         print(e)
-        return e
+        return str(e)
+
 
 def remove_featured_collection(id):
     try:
@@ -300,7 +301,7 @@ def remove_featured_collection(id):
         return str(collections.name) + " is Removed To Featured Collection"
     except Exception as e:
         print(e)
-        return e        
+        return str(e)        
 
 
 def get_featured_collection():
@@ -309,4 +310,4 @@ def get_featured_collection():
         data = get_list_collection(collections)
         return data
     except Exception as e:
-        return e        
+        return str(e)        
