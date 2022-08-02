@@ -30,7 +30,7 @@ app.config['Access-Control-Allow-Origin'] = '*'
 app.config["Access-Control-Allow-Headers"]="Content-Type"
 app.config['DEBUG'] = os.getenv('DEBUG')
 
-
+app.config["JWT_HEADER_NAME"] = "X-Forwarded-Authorization"
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 AUTH="trxquUHCitAZOTlVWAre"
@@ -527,7 +527,7 @@ def addCollection():
         category = request.args.get('category')
         desc = request.args.get('desc')
         print(user)
-        data = insert_collection(user.username,name,image, url, desc,category)
+        data = insert_collection(user[0]['data']['username'],name,image, url, desc,category)
         response_body = {
             "status":200,
             "data": data

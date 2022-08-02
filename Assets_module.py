@@ -220,7 +220,7 @@ def get_collection_by_category(category):
 
 def insert_collection(username,name,image, url, desc,category):
     try:
-        new_asset = Collections(
+        new_collection = Collections(
             collection_id = Collections.objects.count() + 1,
             username=username,
             name = name,
@@ -230,8 +230,8 @@ def insert_collection(username,name,image, url, desc,category):
             desc = desc,
             isFeatured = False
         )
-        new_asset.save()
-        return ({'id': new_asset["collection_id"]})
+        new_collection.save()
+        return ({'id': new_collection["collection_id"]})
     except Exception as e:
         print(e)
         return str(e)
