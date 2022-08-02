@@ -71,4 +71,4 @@ class Collections(Document):
         if not self.listing_date:
             self.listing_date = datetime.datetime.now()
         self.modified_date = datetime.datetime.now()
-        return super(Assets, self).save(*args, **kwargs)
+        return super(Collections, self).save(*args, **kwargs)
