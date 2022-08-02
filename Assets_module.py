@@ -220,16 +220,15 @@ def get_collection_by_category(category):
 
 def insert_collection(username,name,image, url, desc,category):
     try:
-        new_collection = Collections(
-            collection_id = Collections.objects.count() + 1,
-            username=username,
-            name = name,
-            image = image,
-            url = url,
-            category = category,
-            desc = desc,
-            isFeatured = False
-        )
+        new_collection = Collections()
+        new_collection.collection_id = Collections.objects.count() + 1,
+        new_collection.username=username,
+        new_collection.name = name,
+        new_collection.image = image,
+        new_collection.url = url,
+        new_collection.category = category,
+        new_collection.desc = desc,
+        new_collection.isFeatured = False        
         new_collection.save()
         return ({'id': new_collection["collection_id"]})
     except Exception as e:

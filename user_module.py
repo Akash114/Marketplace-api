@@ -58,9 +58,6 @@ def get_user(srks_id):
         users = []
         for user in data:
             users.append({
-            "status":200,
-            "data":
-            {
                 "name": user.name,
                 "username":user.username,
                 "picture":user.picture,
@@ -69,8 +66,8 @@ def get_user(srks_id):
                 "following_username":user.following_username,
                 "follower_username":user.follower_username,
                 "liked_asset":user.liked_asset,
-                "access":user.access
-            }
+                "access":user.access,
+                "wallete_address":user.wallete_address
             })
         return users
     except:

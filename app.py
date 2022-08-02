@@ -145,21 +145,10 @@ def logout():
 @jwt_required()
 def my_profile():
     try:
-        user = get_user(get_jwt_identity())
+        user_data = get_user(get_jwt_identity())
         response_body = {
             "status":200,
-            "data":
-            {
-                "name": user.name,
-                "username":user.username,
-                "picture":user.picture,
-                "email":user.email,
-                "bio":user.bio,
-                "following_username":user.following_username,
-                "follower_username":user.follower_username,
-                "liked_asset":user.liked_asset,
-                "access":user.access
-            }
+            "data":user_data
         }
     except Exception as e:
         return jsonify({'error':str(e)})
@@ -526,8 +515,7 @@ def addCollection():
         url = request.args.get('url')
         category = request.args.get('category')
         desc = request.args.get('desc')
-        print(user)
-        data = insert_collection(user[0]['data']['username'],name,image, url, desc,category)
+        data = insert_collection(user[0]['username'],name,image, url, desc,category)
         response_body = {
             "status":200,
             "data": data
