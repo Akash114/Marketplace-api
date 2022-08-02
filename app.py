@@ -263,10 +263,10 @@ def add_follower():
     try:
         user = get_user(get_jwt_identity())[0]
         following_username = request.json.get('following_username')
-        request_add_follower(user['username'],following_username)
+        msg = request_add_follower(user['username'],following_username)
         response_body = {
         "status":200,
-        "data":'Follower Added Sucessfully'
+        "data":msg
         }
         return response_body
     except Exception as e:

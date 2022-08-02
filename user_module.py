@@ -116,11 +116,14 @@ def request_add_follower(follower_username,following_username):
     try:
         follower_user = User.objects.get(username=follower_username)
         following_user = User.objects.get(username=following_username)
-        follower_user.following_username.append(following_username)
-        following_user.follower_username.append(follower_username)
-        follower_user.save()
-        following_user.save()
-        return "Follower Added Sucessfully !"
+        if following_username not in follower_user.following_username:
+            follower_user.following_username.append(following_username)
+            following_user.follower_username.append(follower_username)
+            follower_user.save()
+            following_user.save()
+            return "Follower Added Sucessfully !"
+        else:
+            return "Follower Aleaready Exist !"    
     except Exception as e:
         print(e)    
         return "User Does Not Exists !"
