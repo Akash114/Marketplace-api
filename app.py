@@ -157,7 +157,7 @@ def my_profile():
 
 
 
-@app.route('/api/updateProfile',methods=["POST"])
+@app.route('/api/updateProfile', methods=["POST"])
 @jwt_required()
 def update_user_profile():
     try:
@@ -257,14 +257,13 @@ def get_users():
         return jsonify({'error':str(e)})
 
 
-@app.route('/api/addFollower'
-)
+@app.route('/api/addFollower', methods=["POST"])
 @jwt_required()
 def add_follower():
     try:
-        user = get_user(get_jwt_identity())
-        following_username = request.args.get('following_username')
-        request_add_follower(user.username,following_username)
+        user = get_user(get_jwt_identity())[0]
+        following_username = request.json.get('following_username')
+        request_add_follower(user['username'],following_username)
         response_body = {
         "status":200,
         "data":'Follower Added Sucessfully'
