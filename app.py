@@ -218,10 +218,38 @@ def user_profile_by_username():
                 "status":200,
                 "data":all_users
             }
+        return response_body
 
     except Exception as e:
         return jsonify({'error':str(e)})
 
+
+
+@app.route('/api/addCollected', methods=["POST"])
+def add_collected():
+    try:
+        asset_id = request.json.get('asset_id')
+        username = request.json.get('username')
+        data = add_colected_user(asset_id,username)
+        response_body = {
+                "status":200,
+                "data":data
+            }
+        return response_body
+
+    except Exception as e:
+        return jsonify({'error':str(e)})    
+
+
+
+@app.route('/api/getCollected', methods=["GET"])
+def get_collected():
+    username = request.json.get('username')
+    data = get_colected_user(username)
+    response_body = {
+                "status":200,
+                "data":data
+            }
     return response_body
 
 

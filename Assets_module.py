@@ -304,6 +304,24 @@ def search(query):
         return str(e)    
 
 
+def add_colected_user(asset_id,username):
+    try:
+        asset = Assets.objects.filter(asset_id=asset_id)   
+        asset.update(collected_user=username)
+        return "User Updated !"
+    except Exception as e:
+        return str(e)
+
+
+def get_colected_user(username):
+    try:
+        asset = Assets.objects.filter(collected_user=username)   
+        data = get_list_asset(asset)
+        return data
+    except Exception as e:
+        return str(e)
+
+
 def add_featured_collection(id):
     try:
         collections = Collections.objects.get(collection_id= id)
