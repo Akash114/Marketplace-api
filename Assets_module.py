@@ -236,6 +236,28 @@ def insert_collection(username,name,image, url, desc,category):
         return str(e)
 
 
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#Like a asset 
+def like_assets(asset_id,username):
+    try: 
+        asset = Assets.objects.get(asset_id= asset_id)
+        
+        if username in username:
+            asset.like.append(username)
+            user = User.objects.get(username=username)
+            user.liked_asset.append(asset_id)
+            asset.save()
+            user.save()
+        else:
+            return "Asset is already liked."    
+    except Exception as e:
+        print(e)
+        return str(e)
+
+
+
 def get_list_collection(collections):
     asset = []
     for data in collections:

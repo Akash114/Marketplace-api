@@ -35,7 +35,7 @@ class Assets(Document):
     price = DecimalField(required=True)
     collectionId = IntField()
     like = ListField()
-    data = DictField(required=True)
+    data = DictField()
     listing_date = DateTimeField()
     modified_date = DateTimeField(default=datetime.datetime.now)
     def save(self, *args, **kwargs):

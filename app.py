@@ -525,6 +525,22 @@ def addCollection():
         return jsonify({'error':str(e)})
 
 
+@app.route('/api/likeAsset',methods=["POST"])
+def likeAsset():
+    try:
+        username = request.json.get('username')
+        asset_id = request.json.get('asset_id')
+        data = like_assets(asset_id,username)
+        response_body = {
+            "status":200,
+            "data": data
+            }       
+
+        return response_body
+    except Exception as e:
+        return e
+
+
 @app.route('/api/getAllCollections',methods=["GET"])
 def getAllCollections():
     try:
