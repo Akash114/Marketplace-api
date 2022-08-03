@@ -1,10 +1,12 @@
+from gc import collect
 from unicodedata import name
 from dotenv import load_dotenv
 from mongoengine import connect
-from models import Assets, User
+from models import Assets, User, Collections
 import uuid
 import os
-from Assets_module import get_list_asset
+from Assets_module import get_list_asset, get_list_collection
+
 
 DB_NAME="users"
 CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=majority"
@@ -62,6 +64,10 @@ def get_user(srks_id):
             for asset_id in user.liked_asset:
                 asset = Assets.objects.get(asset_id=asset_id)
                 liked_assets.append(get_list_asset([asset])[0])
+            asset = Assets.objects.filter(collected_user=user.username)   
+            collected = get_list_asset(asset)
+            collections = Collections.objects.filter(username=user.username)
+            created = get_list_collection(collections)
 
             users.append({
                 "name": user.name,
@@ -73,7 +79,9 @@ def get_user(srks_id):
                 "follower_username":user.follower_username,
                 "liked_asset":liked_assets,
                 "access":user.access,
-                "wallete_address":user.wallete_address
+                "wallete_address":user.wallete_address,
+                "Collected":collected,
+                "Created":created
             })
         return users
     except:
@@ -94,6 +102,11 @@ def get_user_by_usename(username):
             for asset_id in user.liked_asset:
                 asset = Assets.objects.get(asset_id=asset_id)
                 liked_assets.append(get_list_asset([asset])[0])
+            asset = Assets.objects.filter(collected_user=user.username)   
+            collected = get_list_asset(asset)
+            collections = Collections.objects.filter(username=user.username)
+            created = get_list_collection(collections)
+
             users.append({
                 "name": user.name,
                 "username":user.username,
@@ -104,7 +117,9 @@ def get_user_by_usename(username):
                 "follower_username":user.follower_username,
                 "liked_asset":liked_assets,
                 "access":user.access,
-                "wallete_address":user.wallete_address
+                "wallete_address":user.wallete_address,
+                "Collected":collected,
+                "Created":created
             })
         return users
     except Exception as e:
