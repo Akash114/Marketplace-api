@@ -244,12 +244,13 @@ def like_assets(asset_id,username):
     try: 
         asset = Assets.objects.get(asset_id= asset_id)
         
-        if username in username:
+        if username in asset.like:
             asset.like.append(username)
             user = User.objects.get(username=username)
             user.liked_asset.append(asset_id)
             asset.save()
             user.save()
+            return "Asset liked succesfully."
         else:
             return "Asset is already liked."    
     except Exception as e:
