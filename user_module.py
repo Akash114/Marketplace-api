@@ -58,6 +58,11 @@ def get_user(srks_id):
         data = User.objects.filter(srks_id=srks_id)
         users = []
         for user in data:
+            liked_assets = []
+            for asset_id in user.liked_asset:
+                asset = Assets.objects.get(asset_id=asset_id)
+                liked_assets.append(get_list_asset([asset])[0])
+
             users.append({
                 "name": user.name,
                 "username":user.username,
@@ -66,7 +71,7 @@ def get_user(srks_id):
                 "bio":user.bio,
                 "following_username":user.following_username,
                 "follower_username":user.follower_username,
-                "liked_asset":user.liked_asset,
+                "liked_asset":liked_assets,
                 "access":user.access,
                 "wallete_address":user.wallete_address
             })
