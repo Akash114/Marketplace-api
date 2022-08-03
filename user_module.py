@@ -80,8 +80,8 @@ def get_user(srks_id):
                 "liked_asset":liked_assets,
                 "access":user.access,
                 "wallete_address":user.wallete_address,
-                "Collected":collected,
-                "Created":created
+                "collected":collected,
+                "created":created
             })
         return users
     except:
@@ -118,8 +118,8 @@ def get_user_by_usename(username):
                 "liked_asset":liked_assets,
                 "access":user.access,
                 "wallete_address":user.wallete_address,
-                "Collected":collected,
-                "Created":created
+                "collected":collected,
+                "created":created
             })
         return users
     except Exception as e:
