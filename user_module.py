@@ -1,9 +1,10 @@
 from unicodedata import name
 from dotenv import load_dotenv
 from mongoengine import connect
-from models import User
+from models import Assets, User
 import uuid
 import os
+from Assets_module import get_list_asset
 
 DB_NAME="users"
 CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=majority"
@@ -84,6 +85,10 @@ def get_user_by_usename(username):
         data = User.objects.filter(username=username)
         users = []
         for user in data:
+            liked_assets = []
+            for asset_id in user.liked_asset:
+                asset = Assets.objects.get(asset_id=asset_id)
+                liked_assets.append(get_list_asset([asset])[0])
             users.append({
                 "name": user.name,
                 "username":user.username,
@@ -92,12 +97,13 @@ def get_user_by_usename(username):
                 "bio":user.bio,
                 "following_username":user.following_username,
                 "follower_username":user.follower_username,
-                "liked_asset":user.liked_asset,
+                "liked_asset":liked_assets,
                 "access":user.access,
                 "wallete_address":user.wallete_address
             })
         return users
-    except:
+    except Exception as e:
+        print(e)
         return False
 
 # ---------------------------------------------------------------------------------------

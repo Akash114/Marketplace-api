@@ -209,7 +209,7 @@ def user_profile():
     return response_body
 
 
-@app.route('/api/profileByUsername')
+@app.route('/api/profileByUsername', methods=["POST"])
 def user_profile_by_username():
     try:
         username = request.json.get('username') 
