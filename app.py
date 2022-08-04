@@ -360,7 +360,7 @@ def listAsset():
         data = insert_asset(creator,policy_id, token_name, royalti_address,royalti_percentag,asssetKey,price,collectionId,data_)
         response_body = {
         "status":200,
-        "data": str(data)
+        "data": data
         }
         return response_body
     except Exception as e:
