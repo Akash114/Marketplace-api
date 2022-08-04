@@ -38,7 +38,7 @@ class Assets(Document):
     data = DictField()
     listing_date = DateTimeField()
     modified_date = DateTimeField(default=datetime.datetime.now)
-    collected_user = StringField(required=True, max_length=150)
+    collected_user = StringField(max_length=150)
     def save(self, *args, **kwargs):
         if not self.listing_date:
             self.listing_date = datetime.datetime.now()
