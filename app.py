@@ -700,6 +700,15 @@ def adminLogin():
         username = request.json.get('username')
         password = request.json.get('password')
         data = admin_login(username,password)
+        if data== True:
+            # srks_id = base64.b64decode(username.encode('ascii')).decode("utf-8")
+            jwt_token=create_access_token(username)
+            response_body = {
+            "status":200,
+            "jwt": jwt_token
+            } 
+            return response_body
+
         response_body = {
             "status":200,
             "data": data
