@@ -78,7 +78,7 @@ def getToken():
 # def access_decort():
 #     def _access_decort(f):
 #         @wraps(f)
-#         def __home_decorator(*args, **kwargs):
+#         def __access_decort(*args, **kwargs):
 
 
 
@@ -312,6 +312,8 @@ def add_follower():
         return response_body
     except Exception as e:
         return jsonify({'error':str(e)})
+
+
 
 
 @app.route('/api/getFollower',methods=["GET"])
@@ -610,6 +612,19 @@ def getAssetTransactions():
     try:
         asset_id = request.args.get('asset_id')
         data = get_asset_transactions(asset_id)
+        response_body = {
+                "status":200,
+                "data": data
+                }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/getAllTransactions',methods=["GET"])
+def getAllTransactions():
+    try:
+        data = get_all_transactions()
         response_body = {
                 "status":200,
                 "data": data
