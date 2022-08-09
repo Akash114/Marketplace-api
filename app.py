@@ -1,5 +1,6 @@
 #important libraries
 from urllib import response
+from urllib.parse import uses_relative
 from flask import Flask
 import json
 from flask import Flask,redirect, jsonify
@@ -17,6 +18,7 @@ import base64
 from datetime import datetime, timedelta, timezone
 from Assets_module import *
 from transaction_module import *
+from functools import wraps
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -68,6 +70,17 @@ def getToken():
     id = base64.b64encode(ID.encode('ascii')).decode("utf-8") 
     response = jsonify({'redirect_url': 'http://decentralizemusic.com/v1/oauth/login?auth='+str(auth)+'&client_id='+str(id)})
     return response
+
+# # ---------------------------------------------------------------------------------------
+# # ---------------------------------------------------------------------------------------
+# # ---------------------------------------------------------------------------------------
+# #Use Access check Decorator
+# def access_decort():
+#     def _access_decort(f):
+#         @wraps(f)
+#         def __home_decorator(*args, **kwargs):
+
+
 
 
 # ---------------------------------------------------------------------------------------
@@ -329,17 +342,27 @@ def get_access():
         return jsonify({'error':str(e)})
 
 
-@app.route('/api/setAccess',methods=["GET"])
+@app.route('/api/setAccess',methods=["POST"])
+@jwt_required()
 def set_access():
     try:
-        username = request.args.get('username')
-        access_type = request.args.get('access_type')
-        access = request_set_access(username,access_type)
-        response_body = {
-        "status":200,
-        "data":access
-        }
-        return response_body
+        user = get_jwt_identity()
+        username = request.json.get('username')
+        if(user == "Marketadmin"):
+            access_type = request.json.get('access_type')
+            access = request_set_access(username,access_type)
+            response_body = {
+            "status":200,
+            "data":access
+            }
+            return response_body
+        else:
+            response_body = {
+            "status":200,
+            "data":"Only Admin Can Change the Access Type !"
+            }
+            return response_body
+
     except Exception as e:
         return jsonify({'error':str(e)})
 
