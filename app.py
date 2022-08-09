@@ -699,7 +699,6 @@ def adminLogin():
     try:
         username = request.json.get('username')
         password = request.json.get('password')
-        print(username,password)
         data = admin_login(username,password)
         response_body = {
             "status":200,
