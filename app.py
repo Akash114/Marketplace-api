@@ -694,6 +694,22 @@ def featuredCollection():
         return jsonify({'error':str(e)})
 
 
+@app.route('/api/adminLogin',methods=["POST"])
+def adminLogin():
+    try:
+        username = request.json.get('username')
+        password = request.json.get('password')
+        print(username,password)
+        data = admin_login(username,password)
+        response_body = {
+            "status":200,
+            "data": data
+            } 
+        return response_body 
+
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")

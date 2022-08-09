@@ -21,6 +21,7 @@ class User(Document):
     follower_username = ListField()
     liked_asset = ListField()
     access = StringField(required=True, max_length=100)
+    password = StringField(max_length=100)
 
 
 class Assets(Document):

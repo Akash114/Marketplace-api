@@ -196,3 +196,23 @@ def request_set_access(username,access_type):
         print(e)    
         return "User Does Not Exists !"
 
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+#admin Login
+def admin_login(username,password):
+    try:
+        user = User.objects.get(username=username)
+        print(user.password)
+        print(password)
+        if user:
+            if user.password == password:
+                return True
+        else:
+            return "Username or Password is incorrect !!"
+    except Exception as e:
+        print(e)    
+        return "User Does Not Exists !"
+    
