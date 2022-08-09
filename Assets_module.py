@@ -270,7 +270,8 @@ def get_list_collection(collections):
         "image":data.image,
         'url':data.url,
         "category": data.category,
-        "desc":data.desc
+        "desc":data.desc,
+        "isHotlist":data.isFeatured
         }
         )
     return asset
