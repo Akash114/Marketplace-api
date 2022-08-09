@@ -634,6 +634,19 @@ def getAllTransactions():
         return jsonify({'error':str(e)})
 
 
+@app.route('/api/getDailyTransactions',methods=["GET"])
+def getDailyTransactions():
+    try:
+        data = get_transactions_count_dates()
+        response_body = {
+                "status":200,
+                "data": data
+                }       
+        return response_body
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
 @app.route('/api/getEventTransactions',methods=["GET"])
 def getEventTransactions():
     try:

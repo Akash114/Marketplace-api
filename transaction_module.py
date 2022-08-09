@@ -4,6 +4,8 @@ from models import Transactions
 import uuid
 import os
 from datetime import datetime
+import pandas as pd 
+
 DB_NAME="users"
 CLUSTER_URL="mongodb+srv://DM:dm123@dm.bdlnk.mongodb.net/?retryWrites=true&w=majority"
 
@@ -118,4 +120,21 @@ def get_transactions_between_dates(start_date,end_date):
         return data
     except Exception as e:
         print(e)
+        return str(e)
+
+
+def get_transactions_count_dates():
+    try:
+        transaction = Transactions.objects.all()
+        data = get_list_tansaction(transaction)
+        df = pd.DataFrame(data)
+        filtered_data = df.groupby([df['timestamp'].dt.date]).count()['timestamp']
+        filtered_data.index = filtered_data.index.map(str)
+
+        final_data = {
+            'dates':list(filtered_data.to_dict().keys()),
+            'count':list(filtered_data.to_dict().values())
+        }
+        return final_data
+    except Exception as e:
         return str(e)
