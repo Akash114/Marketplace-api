@@ -39,7 +39,7 @@ def update_ui(ui_id,baner_url,video_url, q_and_a):
     if(baner_url): 
         ui_component.update(baner_url=baner_url)
     if(video_url): 
-        ui_component.update(baner_url=baner_url)
+        ui_component.update(video_url=video_url)
     if(q_and_a):  
-        ui_component.update(baner_url=baner_url)
+        ui_component.update(q_and_a=q_and_a)
     return ui_id + "is Updated !"
