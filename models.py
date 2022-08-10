@@ -74,3 +74,11 @@ class Collections(Document):
             self.listing_date = datetime.datetime.now()
         self.modified_date = datetime.datetime.now()
         return super(Collections, self).save(*args, **kwargs)
+
+
+class UIUpdate(Document):
+    meta = {"collection": "UIUpdate"}
+    ui_id = IntField(min_value=1)
+    baner_url = StringField(required=True, max_length=500)  
+    video_url = StringField(required=True, max_length=500)
+    q_and_a = DictField()

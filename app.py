@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, timezone
 from Assets_module import *
 from transaction_module import *
 from functools import wraps
+from ui_module import *
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -768,6 +769,74 @@ def adminLogin():
 
     except Exception as e:
         return jsonify({'error':str(e)})
+
+
+@app.route('/api/addUI',methods=["POST"])
+@jwt_required()
+def addUI():
+    try:
+        user = get_jwt_identity()
+        if(user == "Marketadmin"):
+            baner_url = request.json.get('baner_url')
+            video_url = request.json.get('video_url')
+            q_and_a = request.json.get('q_and_a')
+            data = insert_ui(baner_url,video_url, q_and_a)
+            response_body = {
+                "status":200,
+                "data": data
+                } 
+            return response_body 
+        else:
+            response_body = {
+            "status":200,
+            "data":"Only Admin Can Change the Access Type !"
+            }
+            return response_body
+
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+
+@app.route('/api/getUI',methods=["GET"])
+def getUI():
+    try:
+        data = get_all_componets()
+        response_body = {
+                "status":200,
+                "data": data
+                } 
+        return response_body 
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
+
+@app.route('/api/updateUI',methods=["POST"])
+@jwt_required()
+def updateUI():
+    try:
+        user = get_jwt_identity()
+        if(user == "Marketadmin"):
+            ui_id = request.json.get('ui_id')
+            baner_url = request.json.get('baner_url')
+            video_url = request.json.get('video_url')
+            q_and_a = request.json.get('q_and_a')
+            data = update_ui(ui_id,baner_url,video_url, q_and_a)
+            response_body = {
+                "status":200,
+                "data": data
+                } 
+            return response_body 
+        else:
+            response_body = {
+            "status":200,
+            "data":"Only Admin Can Change the Access Type !"
+            }
+            return response_body
+
+    except Exception as e:
+        return jsonify({'error':str(e)})
+
 
 
 if __name__ == "__main__":
