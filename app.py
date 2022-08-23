@@ -746,6 +746,7 @@ def featuredCollection():
         return jsonify({'error':str(e)})
 
 
+#admin login API
 @app.route('/api/adminLogin',methods=["POST"])
 def adminLogin():
     try:
@@ -753,7 +754,6 @@ def adminLogin():
         password = request.json.get('password')
         data = admin_login(username,password)
         if data== True:
-            # srks_id = base64.b64decode(username.encode('ascii')).decode("utf-8")
             jwt_token=create_access_token(username)
             response_body = {
             "status":200,
