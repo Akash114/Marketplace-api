@@ -32,6 +32,7 @@ class Assets(Document):
     token_name = StringField(required=True, max_length=500)
     royalti_address = StringField(required=True, max_length=500)
     royalti_percentag = IntField()
+    current_holder_address = StringField(max_length=500) 
     asssetKey = StringField(required=True, max_length=500)
     price = DecimalField(required=True)
     collectionId = IntField()

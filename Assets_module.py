@@ -68,10 +68,14 @@ def get_list_asset(assets):
         "asssetKey":data.asssetKey,
         "price":data.price,
         "collectionId":data.collectionId,
-        "data":data.data
+        "data":data.data,
+        "current_holder_address":data.current_holder_address
         }
         )
     return asset
+
+
+
 
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
@@ -303,6 +307,16 @@ def search(query):
         return data
     except Exception as e:
         return str(e)    
+
+
+def add_current_holder(asset_id,address):
+    try:
+        asset = Assets.objects.filter(asset_id=asset_id)   
+        asset.update(current_holder_address=address)
+        return "User Updated !"
+    except Exception as e:
+        return str(e)
+
 
 
 def add_colected_user(asset_id,username):

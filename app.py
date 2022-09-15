@@ -239,6 +239,22 @@ def user_profile_by_username():
 
 
 
+@app.route('/api/addCurrentHolder', methods=["POST"])
+def addCurrentHolder():
+    try:
+        asset_id = request.json.get('asset_id')
+        address = request.json.get('address')
+        data = add_current_holder(asset_id,address)
+        response_body = {
+                "status":200,
+                "data":data
+            }
+        return response_body
+
+    except Exception as e:
+        return jsonify({'error':str(e)})    
+
+
 @app.route('/api/addCollected', methods=["POST"])
 def add_collected():
     try:
